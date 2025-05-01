@@ -2849,3 +2849,28 @@ ERROR: [youtube] zn2v0NZYuZA: This video is available to this channel's members 
 2025-05-01 13:14:47,573 - INFO - 下載成功：132K views · 385 reactions | 可以不要這樣把自己玩壞掉嗎？ | By JC LIN 林振宇
 2025-05-01 13:14:52,452 - INFO - 所有下載已完成
 2025-05-01 13:14:52,453 - INFO - 處理完成
+2025-05-01 13:21:05,214 - INFO - 用戶輸入 URL：https://www.redtube.com/188916361
+2025-05-01 13:21:05,214 - INFO - 正在取得播放清單資訊：https://www.redtube.com/188916361
+2025-05-01 13:21:05,214 - INFO - 執行命令：./yt-dlp.exe https://www.redtube.com/188916361 --get-filename -o %(playlist_title)s --no-simulate --flat-playlist --playlist-items 1
+2025-05-01 13:21:11,486 - INFO - 獲取到播放清單標題: 未知播放清單
+2025-05-01 13:21:11,486 - INFO - 執行命令：./yt-dlp.exe https://www.redtube.com/188916361 --flat-playlist --print id --print title --no-warnings --playlist-items 1-1
+2025-05-01 13:21:17,283 - INFO - 成功取得播放清單資訊：未知播放清單，包含 1 個影片
+2025-05-01 13:21:21,939 - INFO - 下載數量限制：1
+2025-05-01 13:21:24,009 - INFO - 選擇的下載格式：b[ext=mp4]
+2025-05-01 13:21:24,009 - INFO - 正在取得播放清單資訊：https://www.redtube.com/188916361
+2025-05-01 13:21:24,010 - INFO - 執行命令：./yt-dlp.exe https://www.redtube.com/188916361 --get-filename -o %(playlist_title)s --no-simulate --flat-playlist --playlist-items 1
+2025-05-01 13:21:29,912 - INFO - 獲取到播放清單標題: 未知播放清單
+2025-05-01 13:21:29,912 - INFO - 執行命令：./yt-dlp.exe https://www.redtube.com/188916361 --flat-playlist --print id --print title --no-warnings --playlist-items 1-1
+2025-05-01 13:21:35,124 - INFO - 成功取得播放清單資訊：未知播放清單，包含 1 個影片
+2025-05-01 13:21:35,124 - INFO - 已建立資料夾：./downloads\未知播放清單
+2025-05-01 13:21:35,124 - INFO - 已儲存 JSON 檔案：./downloads\未知播放清單\playlist.json
+2025-05-01 13:21:35,124 - INFO - 已建立播放清單 JSON 檔案於 ./downloads\未知播放清單
+2025-05-01 13:21:37,949 - INFO - 是否立即下載：
+2025-05-01 13:21:37,949 - INFO - 將下載 1/1 個影片
+2025-05-01 13:21:37,949 - INFO - 處理批次 1 (1-1)
+2025-05-01 13:21:37,968 - INFO - 正在下載 (1/1)：ASS DRIPPING CUMSHOT. Fitness Babe Wants to Get Wet and Ride Your Cock
+2025-05-01 13:21:37,968 - INFO - 執行命令：./yt-dlp.exe https://www.redtube.com/188916361 -f b[ext=mp4] -o ./downloads\未知播放清單/ASS DRIPPING CUMSHOT. Fitness Babe Wants to Get Wet and Ride Your Cock.mp4 --progress --no-overwrites
+2025-05-01 13:24:17,396 - INFO - 成功使用 cp950 編碼解析輸出
+2025-05-01 13:24:17,396 - INFO - 下載成功：ASS DRIPPING CUMSHOT. Fitness Babe Wants to Get Wet and Ride Your Cock
+2025-05-01 13:24:18,734 - INFO - 所有下載已完成
+2025-05-01 13:24:18,734 - INFO - 處理完成
