@@ -22,26 +22,24 @@ logging.basicConfig(
     filename='downloader.log',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    encoding='utf-8'  # 確保日誌文件使用 UTF-8 編碼
+    encoding='utf-8'
 )
 
 
-class YouTubeDownloader:
-    def __init__(self, base_folder: str = "./youtube_downloads"):
+class VideoDownloader:
+    def __init__(self, base_folder: str = "./downloads"):
         self.base_folder = base_folder
         self.ytdlp_path = './yt-dlp.exe'  # Windows 版本
 
-        # 更精確的 1080p 優先設定
-        # 更精確的最高畫質格式選擇
+        # 格式映射，支援影片和音訊合併
         self.format_map = {
-            '1': 'bestvideo+bestaudio/best',  # 絕對最高畫質（不限制格式）
+            '1': 'b[ext=mp4]',  # 最佳影片+音訊（MP4）
             '2': 'ba[ext=m4a]',  # 僅音訊
-            # 1080p
-            '3': 'bestvideo[height<=1080]+bestaudio/best[height<=1080]',
-            '4': 'bestvideo[height<=720]+bestaudio/best[height<=720]'  # 720p
+            '3': 'bestvideo[height<=1080]+bestaudio[ext=m4a]/best[height<=1080]',  # 1080p
+            '4': 'bestvideo[height<=720]+bestaudio[ext=m4a]/best[height<=720]'   # 720p
         }
 
-        # 支持的編碼列表，用於嘗試解碼 subprocess 輸出
+        # 支援的編碼列表，用於解碼 subprocess 輸出
         self.encodings_to_try = ['cp950', 'gbk', 'gb2312', 'utf-8']
 
     def ensure_folder_exists(self, folder_path: str) -> None:
@@ -74,14 +72,11 @@ class YouTubeDownloader:
         """清理檔案名稱，移除無效字符並限制長度。"""
         if not filename or filename.isspace():
             return "未知標題"
-        # 確保 filename 是字串
         if not isinstance(filename, str):
             filename = str(filename)
-        # 移除無效字符
         invalid_chars = '<>:"/\\|?*'
         for char in invalid_chars:
             filename = filename.replace(char, '_')
-        # 去除前後空白並限制長度
         return filename.strip()[:200]
 
     def get_unique_filename(self, folder_path: str, title: str, ext: str) -> str:
@@ -94,25 +89,11 @@ class YouTubeDownloader:
             counter += 1
         return output_file
 
-    def is_playlist_url(self, url: str) -> bool:
-        """檢查 URL 是否為 YouTube 播放清單 URL。"""
-        parsed = urlparse(url)
-        query_params = parse_qs(parsed.query)
-        is_playlist = 'list' in query_params
-        logging.info(f"檢查 URL：{url}，是否為播放清單：{is_playlist}")
-        return is_playlist
-
-    def is_youtube_url(self, url: str) -> bool:
-        """檢查是否為有效的 YouTube URL。"""
-        parsed = urlparse(url)
-        return parsed.netloc in ('youtube.com', 'www.youtube.com', 'youtu.be')
-
     def run_subprocess_with_encoding(self, cmd: List[str], description: str = "") -> Optional[subprocess.CompletedProcess]:
         """執行 subprocess 命令並處理編碼問題。"""
         print(f"執行命令：{' '.join(cmd)}")
         logging.info(f"執行命令：{' '.join(cmd)}")
 
-        # 直接使用 bytes 模式，手動處理解碼
         try:
             result = subprocess.run(
                 cmd,
@@ -120,7 +101,6 @@ class YouTubeDownloader:
                 check=False
             )
 
-            # 嘗試不同的編碼解碼輸出
             stdout_text = None
             stderr_text = None
 
@@ -130,23 +110,18 @@ class YouTubeDownloader:
                         stdout_text = result.stdout.decode(encoding)
                     if stderr_text is None:
                         stderr_text = result.stderr.decode(encoding)
-
-                    # 如果兩者都成功解碼，跳出循環
                     if stdout_text and stderr_text:
                         print(f"成功使用 {encoding} 編碼解析輸出")
                         logging.info(f"成功使用 {encoding} 編碼解析輸出")
                         break
                 except UnicodeDecodeError:
-                    # 如果解碼失敗，繼續嘗試下一個編碼
                     continue
 
-            # 如果仍然無法解碼，使用替換模式
             if stdout_text is None:
                 stdout_text = result.stdout.decode('utf-8', errors='replace')
             if stderr_text is None:
                 stderr_text = result.stderr.decode('utf-8', errors='replace')
 
-            # 創建一個新的 CompletedProcess 對象，但使用解碼後的文本
             decoded_result = subprocess.CompletedProcess(
                 args=result.args,
                 returncode=result.returncode,
@@ -167,15 +142,14 @@ class YouTubeDownloader:
         logging.info(f"正在取得影片資訊：{video_url}")
 
         try:
-            # 使用更穩定的參數組合
             cmd = [
                 self.ytdlp_path,
                 video_url,
                 '--print', 'id',
                 '--print', 'title',
                 '--no-warnings',
-                '--no-playlist',  # 確保不會處理為播放清單
-                '--ignore-errors'  # 忽略部分錯誤以獲取更多資訊
+                '--no-playlist',
+                '--ignore-errors'
             ]
 
             result = self.run_subprocess_with_encoding(cmd, "取得影片資訊")
@@ -189,44 +163,8 @@ class YouTubeDownloader:
                 print(f"取得影片資訊失敗，返回碼：{result.returncode}")
                 print(f"錯誤輸出：{result.stderr}")
                 logging.error(f"取得影片資訊失敗：{result.stderr}")
-
-                # 檢查是否為會員專屬內容
-                if "This video is available to this channel's members" in result.stderr:
-                    print("\n===== 會員專屬內容 =====")
-                    print("此視頻是頻道會員專屬內容，需要成為會員才能訪問。")
-                    print("===========================\n")
-                    logging.error("視頻為會員專屬內容，無法下載")
-
-                    # 從錯誤信息中提取視頻 ID
-                    video_id = None
-                    for line in result.stderr.split("\n"):
-                        if "ERROR: [youtube]" in line:
-                            parts = line.split(":")
-                            if len(parts) > 1:
-                                video_id = parts[1].strip().split(" ")[
-                                    0].strip()
-                                break
-
-                    if video_id:
-                        return {
-                            "link": video_url,
-                            "title": "會員專屬視頻",
-                            "id": video_id,
-                            "member_only": True
-                        }
-
-                # 嘗試使用更詳細的輸出模式獲取更多調試信息
-                debug_cmd = [self.ytdlp_path, video_url, '-v', '--no-playlist']
-                debug_result = self.run_subprocess_with_encoding(
-                    debug_cmd, "調試影片資訊")
-
-                if debug_result:
-                    print(f"調試信息：{debug_result.stderr}")
-                    logging.error(f"調試信息：{debug_result.stderr}")
-
                 return None
 
-            # 處理輸出
             output = result.stdout.strip() if result.stdout else ""
             if not output:
                 print("命令執行成功但沒有輸出")
@@ -244,8 +182,8 @@ class YouTubeDownloader:
             video_title = lines[1].strip()
 
             if video_id == 'NA' or video_title == 'NA':
-                print(f"YouTube API 返回 NA 值，可能是影片不可用或地區限制")
-                logging.error(f"YouTube API 返回 NA 值，可能是影片不可用或地區限制")
+                print(f"API 返回 NA 值，可能是影片不可用或地區限制")
+                logging.error(f"API 返回 NA 值，可能是影片不可用或地區限制")
                 return None
 
             video_info = {
@@ -268,14 +206,6 @@ class YouTubeDownloader:
         print(f"正在取得播放清單資訊：{playlist_url}")
         logging.info(f"正在取得播放清單資訊：{playlist_url}")
 
-        # 驗證是否為播放清單 URL
-        if not self.is_playlist_url(playlist_url):
-            print("錯誤：輸入的 URL 不是有效的 YouTube 播放清單 URL（缺少 list= 參數）")
-            print("播放清單 URL 應類似：https://www.youtube.com/playlist?list=PL...")
-            logging.error(f"無效的播放清單 URL：{playlist_url}")
-            return None
-
-        # 首先獲取播放清單標題
         try:
             title_cmd = [
                 self.ytdlp_path,
@@ -291,8 +221,7 @@ class YouTubeDownloader:
 
             if result is None or result.returncode != 0:
                 print(f"取得播放清單標題失敗：{result.stderr if result else 'N/A'}")
-                logging.error(
-                    f"取得播放清單標題失敗：{result.stderr if result else 'N/A'}")
+                logging.error(f"取得播放清單標題失敗：{result.stderr if result else 'N/A'}")
                 playlist_title = "未知播放清單"
             else:
                 playlist_title = result.stdout.strip() if result.stdout else "未知播放清單"
@@ -307,9 +236,7 @@ class YouTubeDownloader:
             logging.error(f"取得播放清單標題時發生錯誤：{e}")
             playlist_title = "未知播放清單"
 
-        # 嘗試獲取播放清單中的影片 ID 和標題
         try:
-            # 使用 --flat-playlist 只獲取基本信息，不嘗試下載
             videos_cmd = [
                 self.ytdlp_path,
                 playlist_url,
@@ -322,70 +249,26 @@ class YouTubeDownloader:
             if limit:
                 videos_cmd.extend(['--playlist-items', f'1-{limit}'])
 
-            videos_result = self.run_subprocess_with_encoding(
-                videos_cmd, "取得播放清單影片")
+            videos_result = self.run_subprocess_with_encoding(videos_cmd, "取得播放清單影片")
 
             if videos_result is None:
                 print("執行命令失敗，無法獲取結果")
                 logging.error("執行命令失敗，無法獲取結果")
                 return None
 
-            # 檢查是否有會員限制錯誤
-            is_member_only = "This video is available to this channel's members" in videos_result.stderr
-
-            # 從錯誤信息中提取視頻 ID
-            member_video_ids = []
-            if is_member_only:
-                stderr_lines = videos_result.stderr.split('\n')
-                for line in stderr_lines:
-                    if "ERROR: [youtube]" in line:
-                        parts = line.split(":")
-                        if len(parts) > 1:
-                            video_id = parts[1].strip().split(":")[0].strip()
-                            member_video_ids.append(video_id)
-
-                if member_video_ids:
-                    print(f"\n===== 會員專屬內容 =====")
-                    print(f"此播放清單包含 {len(member_video_ids)} 個頻道會員專屬視頻")
-                    print(f"這些視頻需要「進階應考專區(不再更新)」或更高級別的會員資格才能訪問")
-                    print(f"已提取視頻 ID 並保存到 JSON 文件中，但無法下載視頻內容")
-                    print(f"===========================\n")
-                    logging.warning(f"播放清單包含 {len(member_video_ids)} 個會員專屬視頻")
-
-            # 處理正常輸出
             videos = []
             stdout_content = videos_result.stdout if videos_result.stdout else ""
             lines = stdout_content.strip().split('\n')
 
-            # 每兩行為一組（ID 和標題）
             for i in range(0, len(lines), 2):
                 if i + 1 < len(lines):
                     video_id = lines[i].strip()
                     video_title = lines[i + 1].strip()
                     videos.append({
-                        "link": f"https://www.youtube.com/watch?v={video_id}",
+                        "link": f"{playlist_url}",  # 對於非 YouTube，可能需要調整
                         "title": video_title,
                         "id": video_id
                     })
-
-            # 如果沒有從標準輸出獲取到視頻，但有會員專屬視頻 ID
-            if not videos and member_video_ids:
-                videos = [
-                    {
-                        "link": f"https://www.youtube.com/watch?v={vid}",
-                        "title": f"會員專屬視頻 {i+1}",
-                        "id": vid,
-                        "member_only": True
-                    }
-                    for i, vid in enumerate(member_video_ids)
-                ]
-
-                playlist_info = {
-                    "title": playlist_title,
-                    "videos": videos,
-                    "member_only": True
-                }
-                return playlist_info
 
             if not videos:
                 print("播放清單中沒有可訪問的影片")
@@ -394,8 +277,7 @@ class YouTubeDownloader:
 
             playlist_info = {
                 "title": playlist_title,
-                "videos": videos,
-                "member_only": is_member_only
+                "videos": videos
             }
 
             logging.info(f"成功取得播放清單資訊：{playlist_title}，包含 {len(videos)} 個影片")
@@ -417,44 +299,27 @@ class YouTubeDownloader:
             json.dump(playlist_info['videos'], f, ensure_ascii=False, indent=2)
 
         video_count = len(playlist_info['videos'])
-        member_only = playlist_info.get('member_only', False)
-
-        if member_only:
-            print(f"已儲存 JSON 檔案，包含 {video_count} 個會員專屬影片：{json_path}")
-            logging.info(f"已儲存 JSON 檔案（會員專屬內容）：{json_path}")
-        else:
-            print(f"已儲存 JSON 檔案，包含 {video_count} 個影片：{json_path}")
-            logging.info(f"已儲存 JSON 檔案：{json_path}")
+        print(f"已儲存 JSON 檔案，包含 {video_count} 個影片：{json_path}")
+        logging.info(f"已儲存 JSON 檔案：{json_path}")
 
         return folder_path
 
     def download_single_video(self, video_info: Dict, format: str = 'b[ext=mp4]') -> None:
-        """下載單個影片。"""
+        """下載單個影片，使用影片標題作為檔案名稱。"""
         if not video_info:
             print("沒有影片資訊可用於下載")
             logging.error("沒有影片資訊可用於下載")
             return
 
-        # 檢查是否為會員專屬內容
-        if video_info.get('member_only', False):
-            print("\n===== 會員專屬內容 =====")
-            print("此視頻是頻道會員專屬內容，需要成為會員才能訪問。")
-            print("無法下載視頻內容。")
-            print("===========================\n")
-            logging.warning("嘗試下載會員專屬內容，已跳過")
-            return
-
-        # 建立資料夾
         folder_path = os.path.join(self.base_folder, "單個影片")
         self.ensure_folder_exists(folder_path)
 
-        # 安全的檔案名稱處理
-        safe_title = self.sanitize_filename(video_info['title'])
-        ext = 'mp4' if 'mp4' in format else 'm4a' if 'm4a' in format else 'mp4'
-        output_file = self.get_unique_filename(folder_path, safe_title, ext)
+        title = video_info.get('title', '未知標題')
+        ext = 'mp4' if 'mp4' in format else 'm4a'
+        output_file = self.get_unique_filename(folder_path, title, ext)
 
-        print(f"正在下載影片：{video_info['title']}")
-        logging.info(f"正在下載影片：{video_info['title']}")
+        print(f"正在下載影片：{title}")
+        logging.info(f"正在下載影片：{title}")
 
         cmd = [
             self.ytdlp_path,
@@ -469,20 +334,13 @@ class YouTubeDownloader:
             result = self.run_subprocess_with_encoding(cmd, "下載單個影片")
 
             if result and result.returncode == 0:
-                print(f'✓ 下載成功：{video_info["title"]}')
+                print(f'✓ 下載成功：{title}')
                 print(f'儲存位置：{output_file}')
-                logging.info(f'下載成功：{video_info["title"]}，儲存位置：{output_file}')
+                logging.info(f'下載成功：{title}，儲存位置：{output_file}')
             else:
                 stderr_msg = result.stderr if result and result.stderr else "未知錯誤"
-
-                # 檢查是否為會員專屬內容錯誤
-                if result and "This video is available to this channel's members" in result.stderr:
-                    print(f'✗ 下載失敗：{video_info["title"]} - 此視頻為會員專屬內容')
-                    logging.error(f'下載失敗：{video_info["title"]} - 會員專屬內容')
-                else:
-                    print(f'✗ 下載失敗：{video_info["title"]}\n錯誤：{stderr_msg}')
-                    logging.error(
-                        f'下載失敗：{video_info["title"]}，錯誤：{stderr_msg}')
+                print(f'✗ 下載失敗：{title}\n錯誤：{stderr_msg}')
+                logging.error(f'下載失敗：{title}，錯誤：{stderr_msg}')
 
         except Exception as e:
             print(f"下載影片時發生錯誤：{e}")
@@ -518,7 +376,7 @@ class YouTubeDownloader:
         batch_size: int = 10,
         delay_min: float = 1.0,
         delay_max: float = 5.0,
-        start_index: int = 0  # 新增參數：起始索引
+        start_index: int = 0
     ) -> None:
         """分批下載影片，使用影片標題作為檔案名稱。"""
         if not videos:
@@ -526,56 +384,21 @@ class YouTubeDownloader:
             logging.info("沒有影片可下載")
             return
 
-        # 檢查是否所有視頻都是會員專屬內容
-        all_member_only = all(video.get('member_only', False)
-                              for video in videos)
-
-        if all_member_only:
-            print("\n===== 會員專屬內容 =====")
-            print("此播放清單中的所有視頻都是頻道會員專屬內容")
-            print("這些視頻需要「進階應考專區(不再更新)」或更高級別的會員資格才能訪問")
-            print("無法下載任何視頻內容")
-            print("===========================\n")
-            logging.warning("播放清單全部為會員專屬內容，跳過下載")
-            return
-
-        # 過濾出非會員專屬內容
-        downloadable_videos = [
-            v for v in videos if not v.get('member_only', False)]
-
-        # 如果設置了起始索引，則從該索引開始下載
-        if start_index > 0:
-            downloadable_videos = downloadable_videos[start_index:]
-            print(f"從第 {start_index + 1} 個影片開始下載")
-            logging.info(f"從第 {start_index + 1} 個影片開始下載")
-
-        videos_to_download = downloadable_videos[:limit] if limit and limit < len(
-            downloadable_videos) else downloadable_videos
+        downloadable_videos = videos[start_index:] if start_index > 0 else videos
+        videos_to_download = downloadable_videos[:limit] if limit and limit < len(downloadable_videos) else downloadable_videos
         print(f"將下載 {len(videos_to_download)}/{len(videos)} 個影片")
-        if len(videos_to_download) < len(videos):
-            print(
-                f"注意：有 {len(videos) - len(videos_to_download)} 個視頻因為會員限制或已下載而跳過")
         logging.info(f"將下載 {len(videos_to_download)}/{len(videos)} 個影片")
 
-        # 創建下載記錄文件
         download_log_path = os.path.join(folder_path, 'download_log.json')
         downloaded_videos = self.load_download_log(download_log_path)
 
         for batch_start in range(0, len(videos_to_download), batch_size):
             batch = videos_to_download[batch_start:batch_start + batch_size]
-            print(f"\n處理批次 {batch_start//batch_size + 1} "
-                  f"({batch_start + 1}-{min(batch_start + batch_size, len(videos_to_download))})")
-            logging.info(
-                f"處理批次 {batch_start//batch_size + 1} ({batch_start + 1}-{min(batch_start + batch_size, len(videos_to_download))})")
+            print(f"\n處理批次 {batch_start//batch_size + 1} ({batch_start + 1}-{min(batch_start + batch_size, len(videos_to_download))})")
+            logging.info(f"處理批次 {batch_start//batch_size + 1} ({batch_start + 1}-{min(batch_start + batch_size, len(videos_to_download))})")
 
             for i, video in enumerate(tqdm(batch, desc="批次進度")):
                 try:
-                    # 跳過會員專屬內容
-                    if video.get('member_only', False):
-                        print(f"\n跳過會員專屬視頻：{video.get('title', '未知標題')}")
-                        logging.info(f"跳過會員專屬視頻：{video.get('title', '未知標題')}")
-                        continue
-
                     link = video.get('link')
                     video_id = video.get('id')
                     if not video_id and 'v=' in link:
@@ -583,7 +406,6 @@ class YouTubeDownloader:
 
                     raw_title = video.get('title', '未知標題')
 
-                    # 檢查是否已下載過
                     if video_id and video_id in downloaded_videos:
                         print(f"\n跳過已下載的視頻：{raw_title}")
                         logging.info(f"跳過已下載的視頻：{raw_title}")
@@ -594,16 +416,11 @@ class YouTubeDownloader:
                         logging.error(f"第 {batch_start + i + 1} 項缺少連結")
                         continue
 
-                    print(
-                        f"\n正在下載 ({batch_start + i + 1}/{len(videos_to_download)})：{raw_title}")
-                    logging.info(
-                        f"正在下載 ({batch_start + i + 1}/{len(videos_to_download)})：{raw_title}")
+                    print(f"\n正在下載 ({batch_start + i + 1}/{len(videos_to_download)})：{raw_title}")
+                    logging.info(f"正在下載 ({batch_start + i + 1}/{len(videos_to_download)})：{raw_title}")
 
-                    # 安全的檔案名稱處理
-                    safe_title = self.sanitize_filename(raw_title)
-                    ext = 'mp4' if 'mp4' in format else 'm4a' if 'm4a' in format else 'mp4'
-                    output_file = self.get_unique_filename(
-                        folder_path, safe_title, ext)
+                    ext = 'mp4' if 'mp4' in format else 'm4a'
+                    output_file = self.get_unique_filename(folder_path, raw_title, ext)
 
                     cmd = [
                         self.ytdlp_path,
@@ -614,27 +431,18 @@ class YouTubeDownloader:
                         '--no-overwrites'
                     ]
 
-                    result = self.run_subprocess_with_encoding(
-                        cmd, f"下載影片 {batch_start + i + 1}/{len(videos_to_download)}")
+                    result = self.run_subprocess_with_encoding(cmd, f"下載影片 {batch_start + i + 1}/{len(videos_to_download)}")
 
                     if result and result.returncode == 0:
                         print(f'✓ 下載成功：{raw_title}')
                         logging.info(f'下載成功：{raw_title}')
-                        # 記錄已下載的視頻
                         if video_id:
                             downloaded_videos.append(video_id)
-                            self.save_download_log(
-                                download_log_path, downloaded_videos)
+                            self.save_download_log(download_log_path, downloaded_videos)
                     else:
                         stderr_msg = result.stderr if result and result.stderr else "未知錯誤"
-
-                        # 檢查是否為會員專屬內容錯誤
-                        if result and "This video is available to this channel's members" in result.stderr:
-                            print(f'✗ 下載失敗：{raw_title} - 此視頻為會員專屬內容')
-                            logging.error(f'下載失敗：{raw_title} - 會員專屬內容')
-                        else:
-                            print(f'✗ 下載失敗：{raw_title}\n錯誤：{stderr_msg}')
-                            logging.error(f'下載失敗：{raw_title}，錯誤：{stderr_msg}')
+                        print(f'✗ 下載失敗：{raw_title}\n錯誤：{stderr_msg}')
+                        logging.error(f'下載失敗：{raw_title}，錯誤：{stderr_msg}')
 
                     time.sleep(random.uniform(delay_min, delay_max))
 
@@ -650,15 +458,10 @@ class YouTubeDownloader:
 
     def process_url(self, url: str) -> Tuple[bool, Optional[Union[Dict, List[Dict]]]]:
         """處理 URL，判斷是播放清單還是單個影片。"""
-        if not self.is_youtube_url(url):
-            print("錯誤：輸入的不是有效的 YouTube URL")
-            logging.error(f"無效的 YouTube URL：{url}")
-            return False, None
-
-        if self.is_playlist_url(url):
-            return True, None  # 是播放清單，但尚未獲取資訊
+        playlist_info = self.get_playlist_info(url, limit=1)
+        if playlist_info and len(playlist_info['videos']) > 0:
+            return True, None
         else:
-            # 單個影片
             video_info = self.get_video_info(url)
             if video_info:
                 return False, video_info
@@ -675,7 +478,6 @@ class YouTubeDownloader:
             if not os.path.isdir(folder_path):
                 continue
 
-            # 檢查是否存在播放清單 JSON 文件
             json_path = os.path.join(folder_path, 'playlist.json')
             if os.path.exists(json_path):
                 unfinished.append((folder_name, folder_path))
@@ -684,7 +486,6 @@ class YouTubeDownloader:
 
     def continue_playlist_download(self, folder_path: str) -> None:
         """繼續下載未完成的播放清單"""
-        # 載入播放清單 JSON
         json_path = os.path.join(folder_path, 'playlist.json')
         try:
             with open(json_path, 'r', encoding='utf-8') as f:
@@ -694,33 +495,25 @@ class YouTubeDownloader:
             logging.error(f"載入播放清單 JSON 時發生錯誤：{e}")
             return
 
-        # 載入已下載記錄
         download_log_path = os.path.join(folder_path, 'download_log.json')
         downloaded_videos = self.load_download_log(download_log_path)
 
-        # 計算已下載數量
         downloaded_count = len(downloaded_videos)
         total_count = len(videos)
 
         print(f"播放清單共有 {total_count} 個影片，已下載 {downloaded_count} 個")
 
-        # 詢問從哪個索引開始下載
-        start_index_input = input(
-            f"從第幾個影片開始下載？（1-{total_count}，預設：{downloaded_count+1}）：")
-        start_index = int(start_index_input) - \
-            1 if start_index_input.isdigit() else downloaded_count
+        start_index_input = input(f"從第幾個影片開始下載？（1-{total_count}，預設：{downloaded_count+1}）：")
+        start_index = int(start_index_input) - 1 if start_index_input.isdigit() else downloaded_count
         start_index = max(0, min(start_index, total_count - 1))
 
-        # 詢問下載限制
         limit_input = input("本次下載多少個影片？（輸入數字，或按 Enter 不限制）：")
         limit = int(limit_input) if limit_input.isdigit() else None
 
-        # 詢問下載格式
         format_input = input(
             "請選擇下載格式：\n1. 最佳影片+音訊（預設）\n2. 僅音訊 (MP3)\n3. 1080p\n4. 720p\n選擇：")
         format = self.format_map.get(format_input, 'b[ext=mp4]')
 
-        # 開始下載
         self.download_videos(
             videos,
             folder_path,
@@ -741,7 +534,6 @@ class YouTubeDownloader:
         if not self.download_ytdlp():
             return
 
-        # 檢查是否有未完成的下載任務
         unfinished_playlists = self.find_unfinished_playlists()
         if unfinished_playlists:
             print("檢測到以下未完成的播放清單下載：")
@@ -754,7 +546,7 @@ class YouTubeDownloader:
                 self.continue_playlist_download(unfinished_playlists[idx][1])
                 return
 
-        url = input("請輸入 YouTube 影片或播放清單 URL：")
+        url = input("請輸入影片或播放清單 URL：")
         logging.info(f"用戶輸入 URL：{url}")
         if not url:
             print("未提供 URL，程式結束")
@@ -763,7 +555,6 @@ class YouTubeDownloader:
 
         is_playlist, video_info = self.process_url(url)
 
-        # 如果是單個影片
         if not is_playlist:
             if not video_info:
                 print("無法取得影片資訊，程式結束")
@@ -771,17 +562,6 @@ class YouTubeDownloader:
                 return
 
             print(f"檢測到單個影片：{video_info['title']}")
-
-            # 檢查是否為會員專屬內容
-            if video_info.get('member_only', False):
-                print("\n===== 會員專屬內容 =====")
-                print("此視頻是頻道會員專屬內容，需要成為會員才能訪問。")
-                print("無法下載視頻內容。")
-                print("===========================\n")
-                logging.warning("視頻為會員專屬內容，無法下載")
-                print("\n處理完成")
-                logging.info("處理完成")
-                return
 
             format_input = input(
                 "請選擇下載格式：\n1. 最佳影片+音訊（預設）\n2. 僅音訊 (MP3)\n3. 1080p\n4. 720p\n選擇：")
@@ -793,7 +573,6 @@ class YouTubeDownloader:
             logging.info("單個影片處理完成")
             return
 
-        # 如果是播放清單
         limit_input = input("是否限制下載數量？（輸入數字，或按 Enter 不限制）：")
         limit = int(limit_input) if limit_input.isdigit() else None
         logging.info(f"下載數量限制：{limit}")
@@ -812,28 +591,6 @@ class YouTubeDownloader:
         folder_path = self.save_playlist_json(playlist_info)
         print(f"\n已建立播放清單 JSON 檔案於 {folder_path}")
         logging.info(f"已建立播放清單 JSON 檔案於 {folder_path}")
-
-        # 檢查是否為全部會員專屬內容
-        all_member_only = all(video.get('member_only', False)
-                              for video in playlist_info['videos'])
-
-        if all_member_only:
-            print("\n此播放清單中的所有視頻都是頻道會員專屬內容")
-            print("無法下載任何視頻內容")
-            logging.warning("播放清單全部為會員專屬內容，跳過下載")
-            print("\n處理完成")
-            logging.info("處理完成")
-            return
-
-        # 檢查是否有部分會員專屬內容
-        has_member_only = any(video.get('member_only', False)
-                              for video in playlist_info['videos'])
-        if has_member_only:
-            member_only_count = sum(
-                1 for video in playlist_info['videos'] if video.get('member_only', False))
-            print(f"\n注意：此播放清單中有 {member_only_count} 個視頻是會員專屬內容")
-            print("這些視頻將被跳過下載")
-            logging.warning(f"播放清單中有 {member_only_count} 個會員專屬視頻")
 
         download_now = input("是否立即下載這些影片？（y/n，預設：y）：").lower()
         logging.info(f"是否立即下載：{download_now}")
@@ -858,7 +615,7 @@ class YouTubeDownloader:
 
 
 if __name__ == "__main__":
-    downloader = YouTubeDownloader()
+    downloader = VideoDownloader()
     downloader.run()
 
 

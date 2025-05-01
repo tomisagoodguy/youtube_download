@@ -2671,3 +2671,181 @@ ERROR: [youtube] zn2v0NZYuZA: This video is available to this channel's members 
 2025-05-01 11:44:20,274 - INFO - 成功使用 cp950 編碼解析輸出
 2025-05-01 11:44:20,274 - INFO - 下載成功：資展國際-BDSE37-網路爬蟲01，儲存位置：./youtube_downloads\單個影片/資展國際-BDSE37-網路爬蟲01.mp4
 2025-05-01 11:44:20,274 - INFO - 單個影片處理完成
+2025-05-01 11:49:13,857 - INFO - 用戶輸入 URL：https://ai.finlab.tw/notebook/?uid=TJN4FDuqrwU8DML7DAjUYFIMutp2&sid=%E5%A4%9A%E7%94%A2%E6%A5%AD%E5%83%B9%E6%8A%95&cid=2it1G3fCn7xFuYqBVt2L
+2025-05-01 11:49:13,857 - ERROR - 無效的 YouTube URL：https://ai.finlab.tw/notebook/?uid=TJN4FDuqrwU8DML7DAjUYFIMutp2&sid=%E5%A4%9A%E7%94%A2%E6%A5%AD%E5%83%B9%E6%8A%95&cid=2it1G3fCn7xFuYqBVt2L
+2025-05-01 11:49:13,857 - ERROR - 無法取得影片資訊
+2025-05-01 11:50:23,143 - INFO - 用戶輸入 URL：https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 11:50:23,143 - ERROR - 無效的 YouTube URL：https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 11:50:23,143 - ERROR - 無法取得影片資訊
+2025-05-01 11:57:13,628 - INFO - 已建立資料夾：./downloads
+2025-05-01 11:57:46,560 - INFO - 用戶輸入 URL：https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 11:57:46,560 - INFO - 執行命令：./yt-dlp.exe --dump-json --skip-download --playlist-items 1 https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 11:57:50,323 - INFO - 執行命令：./yt-dlp.exe --dump-json --flat-playlist --playlist-items 1-2 https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 11:58:18,193 - INFO - 用戶輸入 URL：https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 11:58:18,193 - INFO - 執行命令：./yt-dlp.exe --dump-json --skip-download --playlist-items 1 https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 11:58:22,076 - INFO - 執行命令：./yt-dlp.exe --dump-json --flat-playlist --playlist-items 1-2 https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 11:58:42,485 - INFO - 選擇的下載格式：bestvideo+bestaudio/best
+2025-05-01 11:58:42,485 - INFO - 正在取得內容資訊：https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 11:58:42,485 - INFO - 執行命令：./yt-dlp.exe --dump-json --no-playlist https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 11:58:45,570 - INFO - 成功取得內容資訊：包龙星原型竟是大反派？细读经典《九品芝麻官》 P1 p01 国语原片 (來源: BiliBili)
+2025-05-01 11:58:45,570 - INFO - 已建立資料夾：./downloads\BiliBili\單個內容
+2025-05-01 11:58:45,570 - INFO - 正在下載：包龙星原型竟是大反派？细读经典《九品芝麻官》 P1 p01 国语原片 (來源: BiliBili)
+2025-05-01 11:58:45,570 - INFO - 執行命令：./yt-dlp.exe https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click -f bestvideo+bestaudio/best -o ./downloads\BiliBili\單個內容/包龙星原型竟是大反派？细读经典《九品芝麻官》 P1 p01 国语原片.m4a --progress --no-overwrites
+2025-05-01 11:59:39,565 - INFO - 成功使用 cp950 編碼解析輸出
+2025-05-01 11:59:39,565 - INFO - 下載成功：包龙星原型竟是大反派？细读经典《九品芝麻官》 P1 p01 国语原片，儲存位置：./downloads\BiliBili\單個內容/包龙星原型竟是大反派？细读经典《九品芝麻官》 P1 p01 国语原片.m4a
+2025-05-01 11:59:39,565 - INFO - 單個內容下載完成
+2025-05-01 12:01:26,194 - INFO - 執行命令：./yt-dlp.exe --list-extractors
+2025-05-01 12:11:50,845 - INFO - 用戶輸入 URL：https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 12:11:50,846 - INFO - 執行命令：./yt-dlp.exe --dump-json --skip-download --playlist-items 1 https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 12:11:54,582 - INFO - 執行命令：./yt-dlp.exe --dump-json --flat-playlist --playlist-items 1-2 https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 12:12:27,204 - INFO - 用戶輸入 URL：https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 12:12:27,204 - INFO - 執行命令：./yt-dlp.exe --dump-json --skip-download --playlist-items 1 https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 12:12:30,981 - INFO - 執行命令：./yt-dlp.exe --dump-json --flat-playlist --playlist-items 1-2 https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 12:13:16,099 - INFO - 正在掃描資料夾尋找需要合併的檔案：./downloads\BiliBili\單個內容
+2025-05-01 12:13:16,116 - ERROR - 未找到 FFmpeg，無法執行合併功能
+2025-05-01 12:22:38,554 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=HNhiTtoAcLQ
+2025-05-01 12:22:38,554 - INFO - 執行命令：./yt-dlp.exe --dump-json --skip-download --playlist-items 1 https://www.youtube.com/watch?v=HNhiTtoAcLQ
+2025-05-01 12:22:42,219 - ERROR - 不支援的平台或 URL 格式：https://www.youtube.com/watch?v=HNhiTtoAcLQ
+2025-05-01 12:22:58,764 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=HNhiTtoAcLQ
+2025-05-01 12:22:58,764 - INFO - 執行命令：./yt-dlp.exe --dump-json --skip-download --playlist-items 1 https://www.youtube.com/watch?v=HNhiTtoAcLQ
+2025-05-01 12:23:02,311 - ERROR - 不支援的平台或 URL 格式：https://www.youtube.com/watch?v=HNhiTtoAcLQ
+2025-05-01 12:24:28,357 - INFO - 用戶輸入 URL：
+2025-05-01 12:24:28,357 - ERROR - 未提供 URL
+2025-05-01 12:26:34,301 - INFO - 用戶輸入 URL：https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 12:26:34,302 - INFO - 正在取得 Bilibili 內容資訊：https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click
+2025-05-01 12:26:34,302 - INFO - 執行命令：./yt-dlp.exe https://www.bilibili.com/video/BV1m2GrzLE8n/?spm_id_from=333.1007.tianma.7-1-20.click --print id --print title --no-warnings --no-playlist --ignore-errors
+2025-05-01 12:31:18,282 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=CDUlpl9xGM0
+2025-05-01 12:31:18,282 - INFO - 正在取得內容資訊：https://www.youtube.com/watch?v=CDUlpl9xGM0
+2025-05-01 12:31:18,282 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=CDUlpl9xGM0 --print id --print title --no-warnings --no-playlist --ignore-errors
+2025-05-01 12:31:21,782 - ERROR - 取得內容資訊失敗：ERROR: [youtube] CDUlpl9xGM0: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+
+2025-05-01 12:31:21,782 - INFO - 正在取得播放清單資訊：https://www.youtube.com/watch?v=CDUlpl9xGM0
+2025-05-01 12:31:21,782 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=CDUlpl9xGM0 --get-filename -o %(playlist_title)s --no-simulate --flat-playlist --playlist-items 1
+2025-05-01 12:31:25,351 - ERROR - 取得播放清單標題失敗：ERROR: [youtube] CDUlpl9xGM0: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+
+2025-05-01 12:31:25,351 - INFO - 獲取到播放清單標題: 未知播放清單
+2025-05-01 12:31:25,352 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=CDUlpl9xGM0 --flat-playlist --print id --print title --print url --no-warnings
+2025-05-01 12:31:29,113 - ERROR - 播放清單中沒有可訪問的內容
+2025-05-01 12:31:29,114 - ERROR - 無法識別 URL 或無法獲取資訊：https://www.youtube.com/watch?v=CDUlpl9xGM0
+2025-05-01 12:31:29,114 - ERROR - 無法取得內容資訊
+2025-05-01 12:33:54,459 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=CDUlpl9xGM0
+2025-05-01 12:33:54,459 - INFO - 正在取得內容資訊：https://www.youtube.com/watch?v=CDUlpl9xGM0
+2025-05-01 12:33:54,459 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=CDUlpl9xGM0 --print id --print title --no-warnings --no-playlist --ignore-errors
+2025-05-01 12:34:02,108 - INFO - 成功取得內容資訊：真實的溥儀
+2025-05-01 12:34:05,862 - INFO - 選擇的下載格式：bestvideo+bestaudio/best
+2025-05-01 12:34:05,862 - INFO - 已建立資料夾：./downloads\youtube.com
+2025-05-01 12:34:05,863 - INFO - 正在下載內容：真實的溥儀
+2025-05-01 12:34:05,863 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=CDUlpl9xGM0 -f bestvideo+bestaudio/best -o ./downloads\youtube.com\真實的溥儀.mp4 --progress --no-overwrites
+2025-05-01 12:38:52,039 - INFO - 成功使用 cp950 編碼解析輸出
+2025-05-01 12:38:52,039 - INFO - 下載成功：真實的溥儀，儲存位置：./downloads\youtube.com\真實的溥儀.mp4
+2025-05-01 12:38:52,039 - INFO - 單個內容處理完成
+2025-05-01 12:48:07,315 - INFO - 已建立資料夾：./downloads
+2025-05-01 12:48:20,186 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=TxKWMQFyqss
+2025-05-01 12:48:20,186 - INFO - 正在取得內容資訊：https://www.youtube.com/watch?v=TxKWMQFyqss
+2025-05-01 12:48:20,187 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=TxKWMQFyqss --print id --print title --no-warnings --no-playlist --ignore-errors
+2025-05-01 12:48:26,060 - INFO - 成功取得內容資訊：阿啾教召日記2022，不只被教召還確診還得了…｜阿啾小劇場
+2025-05-01 12:49:10,429 - INFO - 選擇的下載格式：bestvideo+bestaudio/best
+2025-05-01 12:49:10,430 - INFO - 已建立資料夾：./downloads\youtube.com
+2025-05-01 12:49:10,430 - INFO - 正在下載內容：阿啾教召日記2022，不只被教召還確診還得了…｜阿啾小劇場
+2025-05-01 12:49:10,430 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=TxKWMQFyqss -f bestvideo+bestaudio/best -o ./downloads\youtube.com\阿啾教召日記2022，不只被教召還確診還得了…｜阿啾小劇場.mp4 --progress --no-overwrites --merge-output-format mp4
+2025-05-01 12:49:43,983 - INFO - 成功使用 cp950 編碼解析輸出
+2025-05-01 12:49:43,983 - INFO - 下載成功：阿啾教召日記2022，不只被教召還確診還得了…｜阿啾小劇場，儲存位置：./downloads\youtube.com\阿啾教召日記2022，不只被教召還確診還得了…｜阿啾小劇場.mp4
+2025-05-01 12:49:43,983 - INFO - 單個內容處理完成
+2025-05-01 12:50:52,596 - INFO - 已建立資料夾：./youtube_downloads
+2025-05-01 12:51:05,025 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=QCxqnUWOq9s
+2025-05-01 12:51:05,027 - INFO - 檢查 URL：https://www.youtube.com/watch?v=QCxqnUWOq9s，是否為播放清單：False
+2025-05-01 12:51:05,027 - INFO - 正在取得影片資訊：https://www.youtube.com/watch?v=QCxqnUWOq9s
+2025-05-01 12:51:05,027 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=QCxqnUWOq9s --print id --print title --no-warnings --no-playlist --ignore-errors
+2025-05-01 12:51:10,610 - INFO - 成功取得影片資訊：沒什麼大不了 no biggie (feat. 茄子蛋阿斌) - Kimberley Chen 陳芳語｜Official Music Video
+2025-05-01 12:51:14,342 - INFO - 選擇的下載格式：bestvideo+bestaudio/best
+2025-05-01 12:51:14,342 - INFO - 已建立資料夾：./youtube_downloads\單個影片
+2025-05-01 12:51:14,343 - INFO - 正在下載影片：沒什麼大不了 no biggie (feat. 茄子蛋阿斌) - Kimberley Chen 陳芳語｜Official Music Video
+2025-05-01 12:51:14,343 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=QCxqnUWOq9s -f bestvideo+bestaudio/best -o ./youtube_downloads\單個影片/沒什麼大不了 no biggie (feat. 茄子蛋阿斌) - Kimberley Chen 陳芳語｜Official Music Video.mp4 --progress --no-overwrites
+2025-05-01 12:52:10,024 - INFO - 成功使用 cp950 編碼解析輸出
+2025-05-01 12:52:10,024 - INFO - 下載成功：沒什麼大不了 no biggie (feat. 茄子蛋阿斌) - Kimberley Chen 陳芳語｜Official Music Video，儲存位置：./youtube_downloads\單個影片/沒什麼大不了 no biggie (feat. 茄子蛋阿斌) - Kimberley Chen 陳芳語｜Official Music Video.mp4
+2025-05-01 12:52:10,024 - INFO - 單個影片處理完成
+2025-05-01 12:53:58,079 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=i3qCVt_l37Y
+2025-05-01 12:53:58,079 - INFO - 檢查 URL：https://www.youtube.com/watch?v=i3qCVt_l37Y，是否為播放清單：False
+2025-05-01 12:53:58,079 - INFO - 正在取得影片資訊：https://www.youtube.com/watch?v=i3qCVt_l37Y
+2025-05-01 12:53:58,079 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=i3qCVt_l37Y --print id --print title --no-warnings --no-playlist --ignore-errors
+2025-05-01 12:54:03,284 - INFO - 成功取得影片資訊：追劇組曲（雪落下的聲音、涼涼、知否知否、起風了）阿卡貝拉翻唱｜尋人啟事The Wanted
+2025-05-01 12:54:08,451 - INFO - 選擇的下載格式：bestvideo[height<=1080]+bestaudio/best[height<=1080]
+2025-05-01 12:54:08,451 - INFO - 正在下載影片：追劇組曲（雪落下的聲音、涼涼、知否知否、起風了）阿卡貝拉翻唱｜尋人啟事The Wanted
+2025-05-01 12:54:08,452 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=i3qCVt_l37Y -f bestvideo[height<=1080]+bestaudio/best[height<=1080] -o ./youtube_downloads\單個影片/追劇組曲（雪落下的聲音、涼涼、知否知否、起風了）阿卡貝拉翻唱｜尋人啟事The Wanted.mp4 --progress --no-overwrites
+2025-05-01 12:54:23,618 - INFO - 成功使用 cp950 編碼解析輸出
+2025-05-01 12:54:23,618 - INFO - 下載成功：追劇組曲（雪落下的聲音、涼涼、知否知否、起風了）阿卡貝拉翻唱｜尋人啟事The Wanted，儲存位置：./youtube_downloads\單個影片/追劇組曲（雪落下的聲音、涼涼、知否知否、起風了）阿卡貝拉翻唱｜尋人啟事The Wanted.mp4
+2025-05-01 12:54:23,618 - INFO - 單個影片處理完成
+2025-05-01 13:01:43,147 - INFO - 已建立資料夾：./youtube_downloads
+2025-05-01 13:01:54,725 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=i3qCVt_l37Y
+2025-05-01 13:01:54,725 - INFO - 檢查 URL：https://www.youtube.com/watch?v=i3qCVt_l37Y，是否為播放清單：False
+2025-05-01 13:01:54,725 - INFO - 正在取得影片資訊：https://www.youtube.com/watch?v=i3qCVt_l37Y
+2025-05-01 13:01:54,725 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=i3qCVt_l37Y --print id --print title --no-warnings --no-playlist --ignore-errors
+2025-05-01 13:02:00,084 - INFO - 成功取得影片資訊：追劇組曲（雪落下的聲音、涼涼、知否知否、起風了）阿卡貝拉翻唱｜尋人啟事The Wanted
+2025-05-01 13:02:07,310 - INFO - 選擇的下載格式：b[ext=mp4]
+2025-05-01 13:02:07,310 - INFO - 已建立資料夾：./youtube_downloads\單個影片
+2025-05-01 13:02:07,310 - INFO - 正在下載影片：追劇組曲（雪落下的聲音、涼涼、知否知否、起風了）阿卡貝拉翻唱｜尋人啟事The Wanted
+2025-05-01 13:02:07,310 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=i3qCVt_l37Y -f b[ext=mp4] -o ./youtube_downloads\單個影片/i3qCVt_l37Y.mp4 --progress --no-overwrites
+2025-05-01 13:02:15,559 - INFO - 下載成功：追劇組曲（雪落下的聲音、涼涼、知否知否、起風了）阿卡貝拉翻唱｜尋人啟事The Wanted，儲存位置：./youtube_downloads\單個影片/i3qCVt_l37Y.mp4
+2025-05-01 13:02:15,559 - INFO - 單個影片處理完成
+2025-05-01 13:06:41,683 - INFO - 已建立資料夾：./downloads
+2025-05-01 13:07:23,650 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1
+2025-05-01 13:07:23,650 - INFO - 正在取得播放清單資訊：https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1
+2025-05-01 13:07:23,651 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1 --get-filename -o %(playlist_title)s --no-simulate --flat-playlist --playlist-items 1
+2025-05-01 13:07:26,722 - ERROR - 執行命令時發生錯誤：'VideoDownloader' object has no attribute 'encodings_to_try'
+2025-05-01 13:07:26,722 - ERROR - 取得播放清單標題失敗：N/A
+2025-05-01 13:07:26,722 - INFO - 獲取到播放清單標題: 未知播放清單
+2025-05-01 13:07:26,723 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1 --flat-playlist --print id --print title --no-warnings --playlist-items 1-1
+2025-05-01 13:07:29,907 - ERROR - 執行命令時發生錯誤：'VideoDownloader' object has no attribute 'encodings_to_try'
+2025-05-01 13:07:29,908 - ERROR - 執行命令失敗，無法獲取結果
+2025-05-01 13:07:29,908 - INFO - 正在取得影片資訊：https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1
+2025-05-01 13:07:29,908 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1 --print id --print title --no-warnings --no-playlist --ignore-errors
+2025-05-01 13:07:35,689 - ERROR - 執行命令時發生錯誤：'VideoDownloader' object has no attribute 'encodings_to_try'
+2025-05-01 13:07:35,690 - ERROR - 執行命令失敗，無法獲取結果
+2025-05-01 13:07:35,690 - ERROR - 無法取得影片資訊
+2025-05-01 13:11:12,325 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1
+2025-05-01 13:11:12,325 - INFO - 正在取得播放清單資訊：https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1
+2025-05-01 13:11:12,326 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1 --get-filename -o %(playlist_title)s --no-simulate --flat-playlist --playlist-items 1
+2025-05-01 13:11:15,418 - INFO - 獲取到播放清單標題: Mix - 黃鴻升 Alien Huang【不屑 Contempt】Official Music Video
+2025-05-01 13:11:15,418 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1 --flat-playlist --print id --print title --no-warnings --playlist-items 1-1
+2025-05-01 13:11:18,569 - INFO - 成功取得播放清單資訊：Mix - 黃鴻升 Alien Huang【不屑 Contempt】Official Music Video，包含 1 個影片
+2025-05-01 13:11:29,719 - INFO - 下載數量限制：1
+2025-05-01 13:11:31,810 - INFO - 選擇的下載格式：b[ext=mp4]
+2025-05-01 13:11:31,810 - INFO - 正在取得播放清單資訊：https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1
+2025-05-01 13:11:31,811 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1 --get-filename -o %(playlist_title)s --no-simulate --flat-playlist --playlist-items 1
+2025-05-01 13:11:35,111 - INFO - 獲取到播放清單標題: Mix - 黃鴻升 Alien Huang【不屑 Contempt】Official Music Video
+2025-05-01 13:11:35,111 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1 --flat-playlist --print id --print title --no-warnings --playlist-items 1-1
+2025-05-01 13:11:38,686 - INFO - 成功取得播放清單資訊：Mix - 黃鴻升 Alien Huang【不屑 Contempt】Official Music Video，包含 1 個影片
+2025-05-01 13:11:38,687 - INFO - 已建立資料夾：./downloads\Mix - 黃鴻升 Alien Huang【不屑 Contempt】Official Music Video
+2025-05-01 13:11:38,688 - INFO - 已儲存 JSON 檔案：./downloads\Mix - 黃鴻升 Alien Huang【不屑 Contempt】Official Music Video\playlist.json
+2025-05-01 13:11:38,688 - INFO - 已建立播放清單 JSON 檔案於 ./downloads\Mix - 黃鴻升 Alien Huang【不屑 Contempt】Official Music Video
+2025-05-01 13:11:42,604 - INFO - 是否立即下載：
+2025-05-01 13:11:42,604 - INFO - 將下載 1/1 個影片
+2025-05-01 13:11:42,606 - INFO - 處理批次 1 (1-1)
+2025-05-01 13:11:42,616 - INFO - 正在下載 (1/1)：黃鴻升 Alien Huang【不屑 Contempt】Official Music Video
+2025-05-01 13:11:42,616 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=-t9M9m_731g&list=RD-t9M9m_731g&index=1 -f b[ext=mp4] -o ./downloads\Mix - 黃鴻升 Alien Huang【不屑 Contempt】Official Music Video/黃鴻升 Alien Huang【不屑 Contempt】Official Music Video.mp4 --progress --no-overwrites
+2025-05-01 13:14:24,706 - INFO - 用戶輸入 URL：https://www.facebook.com/watch?v=1749202292670201
+2025-05-01 13:14:24,706 - INFO - 正在取得播放清單資訊：https://www.facebook.com/watch?v=1749202292670201
+2025-05-01 13:14:24,706 - INFO - 執行命令：./yt-dlp.exe https://www.facebook.com/watch?v=1749202292670201 --get-filename -o %(playlist_title)s --no-simulate --flat-playlist --playlist-items 1
+2025-05-01 13:14:28,571 - INFO - 成功使用 cp950 編碼解析輸出
+2025-05-01 13:14:28,576 - INFO - 獲取到播放清單標題: 未知播放清單
+2025-05-01 13:14:28,576 - INFO - 執行命令：./yt-dlp.exe https://www.facebook.com/watch?v=1749202292670201 --flat-playlist --print id --print title --no-warnings --playlist-items 1-1
+2025-05-01 13:14:31,546 - INFO - 成功取得播放清單資訊：未知播放清單，包含 1 個影片
+2025-05-01 13:14:33,661 - INFO - 下載數量限制：1
+2025-05-01 13:14:35,507 - INFO - 選擇的下載格式：b[ext=mp4]
+2025-05-01 13:14:35,507 - INFO - 正在取得播放清單資訊：https://www.facebook.com/watch?v=1749202292670201
+2025-05-01 13:14:35,507 - INFO - 執行命令：./yt-dlp.exe https://www.facebook.com/watch?v=1749202292670201 --get-filename -o %(playlist_title)s --no-simulate --flat-playlist --playlist-items 1
+2025-05-01 13:14:38,505 - INFO - 成功使用 cp950 編碼解析輸出
+2025-05-01 13:14:38,505 - INFO - 獲取到播放清單標題: 未知播放清單
+2025-05-01 13:14:38,505 - INFO - 執行命令：./yt-dlp.exe https://www.facebook.com/watch?v=1749202292670201 --flat-playlist --print id --print title --no-warnings --playlist-items 1-1
+2025-05-01 13:14:41,366 - INFO - 成功取得播放清單資訊：未知播放清單，包含 1 個影片
+2025-05-01 13:14:41,366 - INFO - 已建立資料夾：./downloads\未知播放清單
+2025-05-01 13:14:41,366 - INFO - 已儲存 JSON 檔案：./downloads\未知播放清單\playlist.json
+2025-05-01 13:14:41,366 - INFO - 已建立播放清單 JSON 檔案於 ./downloads\未知播放清單
+2025-05-01 13:14:43,666 - INFO - 是否立即下載：
+2025-05-01 13:14:43,666 - INFO - 將下載 1/1 個影片
+2025-05-01 13:14:43,666 - INFO - 處理批次 1 (1-1)
+2025-05-01 13:14:43,686 - INFO - 正在下載 (1/1)：132K views · 385 reactions | 可以不要這樣把自己玩壞掉嗎？ | By JC LIN 林振宇
+2025-05-01 13:14:43,686 - INFO - 執行命令：./yt-dlp.exe https://www.facebook.com/watch?v=1749202292670201 -f b[ext=mp4] -o ./downloads\未知播放清單/132K views · 385 reactions _ 可以不要這樣把自己玩壞掉嗎？ _ By JC LIN 林振宇.mp4 --progress --no-overwrites
+2025-05-01 13:14:47,573 - INFO - 下載成功：132K views · 385 reactions | 可以不要這樣把自己玩壞掉嗎？ | By JC LIN 林振宇
+2025-05-01 13:14:52,452 - INFO - 所有下載已完成
+2025-05-01 13:14:52,453 - INFO - 處理完成
