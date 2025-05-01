@@ -2647,3 +2647,27 @@ ERROR: [youtube] zn2v0NZYuZA: This video is available to this channel's members 
 2025-05-01 11:31:12,251 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=lFpS1gcJRgc -f b[ext=mp4] -o ./youtube_downloads\單個影片/顯然樂隊-低賤的人Official Video.mp4 --progress --no-overwrites
 2025-05-01 11:31:22,234 - INFO - 下載成功：顯然樂隊-低賤的人Official Video，儲存位置：./youtube_downloads\單個影片/顯然樂隊-低賤的人Official Video.mp4
 2025-05-01 11:31:22,234 - INFO - 單個影片處理完成
+2025-05-01 11:33:19,384 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=i7nfgztwJjQ&t=2594s
+2025-05-01 11:33:19,384 - INFO - 檢查 URL：https://www.youtube.com/watch?v=i7nfgztwJjQ&t=2594s，是否為播放清單：False
+2025-05-01 11:33:19,384 - INFO - 正在取得影片資訊：https://www.youtube.com/watch?v=i7nfgztwJjQ&t=2594s
+2025-05-01 11:33:19,385 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=i7nfgztwJjQ&t=2594s --print id --print title --no-warnings --no-playlist --ignore-errors
+2025-05-01 11:33:24,595 - INFO - 成功取得影片資訊：資展國際-BDSE37-網路爬蟲01
+2025-05-01 11:33:26,533 - INFO - 選擇的下載格式：b[ext=mp4]
+2025-05-01 11:33:26,533 - INFO - 正在下載影片：資展國際-BDSE37-網路爬蟲01
+2025-05-01 11:33:26,534 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=i7nfgztwJjQ&t=2594s -f b[ext=mp4] -o ./youtube_downloads\單個影片/資展國際-BDSE37-網路爬蟲01.mp4 --progress --no-overwrites
+2025-05-01 11:33:47,320 - INFO - 下載成功：資展國際-BDSE37-網路爬蟲01，儲存位置：./youtube_downloads\單個影片/資展國際-BDSE37-網路爬蟲01.mp4
+2025-05-01 11:33:47,320 - INFO - 單個影片處理完成
+2025-05-01 11:42:03,632 - INFO - 用戶輸入 URL：
+2025-05-01 11:42:03,632 - ERROR - 未提供 URL
+2025-05-01 11:42:58,562 - INFO - 用戶輸入 URL：https://www.youtube.com/watch?v=i7nfgztwJjQ&t=2594s
+2025-05-01 11:42:58,562 - INFO - 檢查 URL：https://www.youtube.com/watch?v=i7nfgztwJjQ&t=2594s，是否為播放清單：False
+2025-05-01 11:42:58,563 - INFO - 正在取得影片資訊：https://www.youtube.com/watch?v=i7nfgztwJjQ&t=2594s
+2025-05-01 11:42:58,563 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=i7nfgztwJjQ&t=2594s --print id --print title --no-warnings --no-playlist --ignore-errors
+2025-05-01 11:43:03,683 - INFO - 成功取得影片資訊：資展國際-BDSE37-網路爬蟲01
+2025-05-01 11:43:10,965 - INFO - 選擇的下載格式：bestvideo[height>=1080]+bestaudio/best[height>=1080]
+2025-05-01 11:43:10,966 - INFO - 已建立資料夾：./youtube_downloads\單個影片
+2025-05-01 11:43:10,966 - INFO - 正在下載影片：資展國際-BDSE37-網路爬蟲01
+2025-05-01 11:43:10,966 - INFO - 執行命令：./yt-dlp.exe https://www.youtube.com/watch?v=i7nfgztwJjQ&t=2594s -f bestvideo[height>=1080]+bestaudio/best[height>=1080] -o ./youtube_downloads\單個影片/資展國際-BDSE37-網路爬蟲01.mp4 --progress --no-overwrites
+2025-05-01 11:44:20,274 - INFO - 成功使用 cp950 編碼解析輸出
+2025-05-01 11:44:20,274 - INFO - 下載成功：資展國際-BDSE37-網路爬蟲01，儲存位置：./youtube_downloads\單個影片/資展國際-BDSE37-網路爬蟲01.mp4
+2025-05-01 11:44:20,274 - INFO - 單個影片處理完成

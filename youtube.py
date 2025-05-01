@@ -30,16 +30,16 @@ class YouTubeDownloader:
     def __init__(self, base_folder: str = "./youtube_downloads"):
         self.base_folder = base_folder
         self.ytdlp_path = './yt-dlp.exe'  # Windows 版本
- 
+
         # 更精確的 1080p 優先設定
         # 更精確的最高畫質格式選擇
         self.format_map = {
             '1': 'bestvideo+bestaudio/best',  # 絕對最高畫質（不限制格式）
             '2': 'ba[ext=m4a]',  # 僅音訊
-            '3': 'bestvideo[height<=1080]+bestaudio/best[height<=1080]',  # 1080p
+            # 1080p
+            '3': 'bestvideo[height<=1080]+bestaudio/best[height<=1080]',
             '4': 'bestvideo[height<=720]+bestaudio/best[height<=720]'  # 720p
         }
-
 
         # 支持的編碼列表，用於嘗試解碼 subprocess 輸出
         self.encodings_to_try = ['cp950', 'gbk', 'gb2312', 'utf-8']
@@ -364,7 +364,8 @@ class YouTubeDownloader:
                     video_title = lines[i + 1].strip()
                     videos.append({
                         "link": f"https://www.youtube.com/watch?v={video_id}",
-                        "title": video_title
+                        "title": video_title,
+                        "id": video_id
                     })
 
             # 如果沒有從標準輸出獲取到視頻，但有會員專屬視頻 ID
@@ -373,6 +374,7 @@ class YouTubeDownloader:
                     {
                         "link": f"https://www.youtube.com/watch?v={vid}",
                         "title": f"會員專屬視頻 {i+1}",
+                        "id": vid,
                         "member_only": True
                     }
                     for i, vid in enumerate(member_video_ids)
@@ -486,6 +488,27 @@ class YouTubeDownloader:
             print(f"下載影片時發生錯誤：{e}")
             logging.error(f"下載影片時發生錯誤：{e}")
 
+    def load_download_log(self, log_path: str) -> List[str]:
+        """載入已下載影片的記錄"""
+        if os.path.exists(log_path):
+            try:
+                with open(log_path, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"載入下載記錄時發生錯誤：{e}")
+                logging.error(f"載入下載記錄時發生錯誤：{e}")
+                return []
+        return []
+
+    def save_download_log(self, log_path: str, video_ids: List[str]) -> None:
+        """保存已下載影片的記錄"""
+        try:
+            with open(log_path, 'w', encoding='utf-8') as f:
+                json.dump(video_ids, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"保存下載記錄時發生錯誤：{e}")
+            logging.error(f"保存下載記錄時發生錯誤：{e}")
+
     def download_videos(
         self,
         videos: List[Dict],
@@ -494,7 +517,8 @@ class YouTubeDownloader:
         format: str = 'b[ext=mp4]',
         batch_size: int = 10,
         delay_min: float = 1.0,
-        delay_max: float = 5.0
+        delay_max: float = 5.0,
+        start_index: int = 0  # 新增參數：起始索引
     ) -> None:
         """分批下載影片，使用影片標題作為檔案名稱。"""
         if not videos:
@@ -519,12 +543,23 @@ class YouTubeDownloader:
         downloadable_videos = [
             v for v in videos if not v.get('member_only', False)]
 
+        # 如果設置了起始索引，則從該索引開始下載
+        if start_index > 0:
+            downloadable_videos = downloadable_videos[start_index:]
+            print(f"從第 {start_index + 1} 個影片開始下載")
+            logging.info(f"從第 {start_index + 1} 個影片開始下載")
+
         videos_to_download = downloadable_videos[:limit] if limit and limit < len(
             downloadable_videos) else downloadable_videos
         print(f"將下載 {len(videos_to_download)}/{len(videos)} 個影片")
         if len(videos_to_download) < len(videos):
-            print(f"注意：有 {len(videos) - len(videos_to_download)} 個視頻因為會員限制無法下載")
+            print(
+                f"注意：有 {len(videos) - len(videos_to_download)} 個視頻因為會員限制或已下載而跳過")
         logging.info(f"將下載 {len(videos_to_download)}/{len(videos)} 個影片")
+
+        # 創建下載記錄文件
+        download_log_path = os.path.join(folder_path, 'download_log.json')
+        downloaded_videos = self.load_download_log(download_log_path)
 
         for batch_start in range(0, len(videos_to_download), batch_size):
             batch = videos_to_download[batch_start:batch_start + batch_size]
@@ -542,7 +577,18 @@ class YouTubeDownloader:
                         continue
 
                     link = video.get('link')
+                    video_id = video.get('id')
+                    if not video_id and 'v=' in link:
+                        video_id = link.split('v=')[1].split('&')[0]
+
                     raw_title = video.get('title', '未知標題')
+
+                    # 檢查是否已下載過
+                    if video_id and video_id in downloaded_videos:
+                        print(f"\n跳過已下載的視頻：{raw_title}")
+                        logging.info(f"跳過已下載的視頻：{raw_title}")
+                        continue
+
                     if not link:
                         print(f"錯誤：第 {batch_start + i + 1} 項缺少連結")
                         logging.error(f"第 {batch_start + i + 1} 項缺少連結")
@@ -574,6 +620,11 @@ class YouTubeDownloader:
                     if result and result.returncode == 0:
                         print(f'✓ 下載成功：{raw_title}')
                         logging.info(f'下載成功：{raw_title}')
+                        # 記錄已下載的視頻
+                        if video_id:
+                            downloaded_videos.append(video_id)
+                            self.save_download_log(
+                                download_log_path, downloaded_videos)
                     else:
                         stderr_msg = result.stderr if result and result.stderr else "未知錯誤"
 
@@ -613,11 +664,95 @@ class YouTubeDownloader:
                 return False, video_info
             return False, None
 
+    def find_unfinished_playlists(self) -> List[Tuple[str, str]]:
+        """查找未完成的播放清單下載任務"""
+        unfinished = []
+        if not os.path.exists(self.base_folder):
+            return unfinished
+
+        for folder_name in os.listdir(self.base_folder):
+            folder_path = os.path.join(self.base_folder, folder_name)
+            if not os.path.isdir(folder_path):
+                continue
+
+            # 檢查是否存在播放清單 JSON 文件
+            json_path = os.path.join(folder_path, 'playlist.json')
+            if os.path.exists(json_path):
+                unfinished.append((folder_name, folder_path))
+
+        return unfinished
+
+    def continue_playlist_download(self, folder_path: str) -> None:
+        """繼續下載未完成的播放清單"""
+        # 載入播放清單 JSON
+        json_path = os.path.join(folder_path, 'playlist.json')
+        try:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                videos = json.load(f)
+        except Exception as e:
+            print(f"載入播放清單 JSON 時發生錯誤：{e}")
+            logging.error(f"載入播放清單 JSON 時發生錯誤：{e}")
+            return
+
+        # 載入已下載記錄
+        download_log_path = os.path.join(folder_path, 'download_log.json')
+        downloaded_videos = self.load_download_log(download_log_path)
+
+        # 計算已下載數量
+        downloaded_count = len(downloaded_videos)
+        total_count = len(videos)
+
+        print(f"播放清單共有 {total_count} 個影片，已下載 {downloaded_count} 個")
+
+        # 詢問從哪個索引開始下載
+        start_index_input = input(
+            f"從第幾個影片開始下載？（1-{total_count}，預設：{downloaded_count+1}）：")
+        start_index = int(start_index_input) - \
+            1 if start_index_input.isdigit() else downloaded_count
+        start_index = max(0, min(start_index, total_count - 1))
+
+        # 詢問下載限制
+        limit_input = input("本次下載多少個影片？（輸入數字，或按 Enter 不限制）：")
+        limit = int(limit_input) if limit_input.isdigit() else None
+
+        # 詢問下載格式
+        format_input = input(
+            "請選擇下載格式：\n1. 最佳影片+音訊（預設）\n2. 僅音訊 (MP3)\n3. 1080p\n4. 720p\n選擇：")
+        format = self.format_map.get(format_input, 'b[ext=mp4]')
+
+        # 開始下載
+        self.download_videos(
+            videos,
+            folder_path,
+            limit,
+            format,
+            batch_size=10,
+            delay_min=1.0,
+            delay_max=5.0,
+            start_index=start_index
+        )
+
+        print("\n本次下載已完成")
+        logging.info("本次下載已完成")
+
     def run(self) -> None:
         """主執行流程。"""
         self.ensure_folder_exists(self.base_folder)
         if not self.download_ytdlp():
             return
+
+        # 檢查是否有未完成的下載任務
+        unfinished_playlists = self.find_unfinished_playlists()
+        if unfinished_playlists:
+            print("檢測到以下未完成的播放清單下載：")
+            for i, (playlist_title, folder_path) in enumerate(unfinished_playlists):
+                print(f"{i+1}. {playlist_title}")
+
+            choice = input("請選擇要繼續下載的播放清單編號（按 Enter 開始新的下載）：")
+            if choice.isdigit() and 1 <= int(choice) <= len(unfinished_playlists):
+                idx = int(choice) - 1
+                self.continue_playlist_download(unfinished_playlists[idx][1])
+                return
 
         url = input("請輸入 YouTube 影片或播放清單 URL：")
         logging.info(f"用戶輸入 URL：{url}")
@@ -727,5 +862,5 @@ if __name__ == "__main__":
     downloader.run()
 
 
-
 # python youtube.py
+
