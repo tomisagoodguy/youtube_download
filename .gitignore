@@ -1,0 +1,21 @@
+# 忽略下載的影片檔案
+*.mp4
+*.webm
+*.mkv
+*.m4a
+*.mp3
+*.ogg
+*.flv
+*.mov
+*.avi
+
+# 忽略下載資料夾
+youtube_downloads/
+
+# 忽略 yt-dlp 執行檔
+yt-dlp.exe
+
+# 忽略可能產生的暫存檔
+*.part
+*.ytdl
+*.temp
